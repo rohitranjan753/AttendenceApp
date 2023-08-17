@@ -29,7 +29,9 @@ class _NavBarState extends State<NavBar> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
+
           ),
+          borderRadius: BorderRadius.circular(20),
 
           color: Colors.transparent,
           boxShadow: [

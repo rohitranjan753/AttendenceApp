@@ -1,5 +1,8 @@
+
+import 'package:attendenceapp/screen/upload_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -58,22 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
             ),
             Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/logo.jpg')),
+              height: 60,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(30),
+                ),
 
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 10,
-                    offset: Offset(2, 2),
-                  )
-                ],
-                border: Border(),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              height: 200,
-              width: 200,
-            )
+                child: MaterialButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadScreen()));
+                }, child: Text('CHECK-IN',style: TextStyle(color: Colors.white,fontSize: 20,letterSpacing: 3),))),
+
+
           ],
         ),
       ),
