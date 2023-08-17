@@ -4,6 +4,7 @@ import 'package:attendenceapp/screen/login_screen.dart';
 import 'package:attendenceapp/widget/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     User? user = FirebaseAuth.instance.currentUser;
 
     // Delay the navigation slightly to show the splash screen.
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 4));
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -36,9 +37,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
       body: Center(
-        child: Image.asset('assets/logo.jpg', height: 300, width: 300),
+        child: Column(
+          children: [
+            Lottie.asset(
+              'assets/facial_logo.json',
+              height: MediaQuery.of(context).size.height * 0.6,
+              repeat: true,
+              reverse: true,
+            ),
+            Text('AttendEase',style: TextStyle(fontSize: 30,letterSpacing: 3),)
+          ],
+        ),
       ),
     );
   }

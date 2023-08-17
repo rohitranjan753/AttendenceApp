@@ -14,13 +14,14 @@ class _ProfileSState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        centerTitle: true,
       ),
       body: Center(
         child: Container(
           height: 70,
           width: 300,
           decoration: BoxDecoration(
-            color: Colors.purple,
+            color: Colors.black54,
             borderRadius: BorderRadius.circular(10),
           ),
           child: MaterialButton(onPressed: () async {

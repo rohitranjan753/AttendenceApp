@@ -48,7 +48,11 @@ dependencies:
   permission_handler: ^10.4.3
   fluttertoast: ^8.2.2
   geocoding: ^2.1.0
-
+  google_fonts: ^5.1.0
+  lottie: ^2.6.0
+  path_provider: ^2.1.0
+  csv: ^5.0.2
+  share: ^2.0.4
 
 dev_dependencies:
   flutter_test:

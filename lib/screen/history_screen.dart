@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -11,6 +17,53 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  List<QueryDocumentSnapshot> docs = []; // Declare the list here
+
+  Future<void> _exportAttendanceData(List<QueryDocumentSnapshot> docs) async {
+    List<List<dynamic>> rows = [];
+    rows.add(['Timestamp','Location', 'Latitude', 'Longitude', 'City', 'Postal Code']);
+
+    for (var doc in docs) {
+      final timestamp = _formatTimestamp(doc['timestamp']);
+      final latitude = doc['latitude'];
+      final longitude = doc['longitude'];
+      final city = doc['city'];
+      final postalCode = doc['postalcode'];
+      // Add print statements to debug
+      print('Timestamp: $timestamp');
+      print('Latitude: $latitude');
+      print('Longitude: $longitude');
+      print('City: $city');
+      print('Postal Code: $postalCode');
+
+
+
+      rows.add([
+        timestamp.toString(),
+        '$city, $postalCode',
+        latitude,
+        longitude,
+        city,
+        postalCode,
+      ]);
+    }
+
+    String csvData = const ListToCsvConverter().convert(rows);
+
+    final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
+    final file = File('${directory!.path}/attendance_data.csv');
+    await file.writeAsString(csvData);
+
+    await Share.shareFiles(
+      [file.path],
+      text: 'Exported Attendance Data',
+      subject: 'Attendance Data',
+      mimeTypes: ['text/csv'], // Corrected parameter name
+    );
+  }
+
+
+
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp is Timestamp) {
       DateTime dateTime = timestamp.toDate();
@@ -18,7 +71,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
     return 'N/A';
   }
-
 
   final userDocRef = FirebaseFirestore.instance
       .collection('Users')
@@ -28,6 +80,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('History'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.download),
+            onPressed: () {
+              _exportAttendanceData(docs);
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: userDocRef.collection('attendance').snapshots(),
@@ -40,7 +101,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             return Center(child: CircularProgressIndicator());
           }
 
-          final docs = snapshot.data!.docs;
+          docs = snapshot.data!.docs;
 
           if (docs.isEmpty) {
             return Center(child: Text('No attendance data'));
@@ -57,11 +118,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
               final city = doc['city'];
               final postalCode = doc['postalcode'];
 
-              return ListTile(
-                leading: Image.network(imageUrl,), // Display the image
-                title: Text('Location: $city, $postalCode'),
-                subtitle: Text(
-                    'Timestamp: ${_formatTimestamp(timestamp)}\nLatitude: $latitude\nLongitude: $longitude'),
+              return Container(
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(2, 2),
+                      )
+                    ]),
+                child: ListTile(
+                  leading: Image.network(
+                    imageUrl,
+                  ), // Display the image
+                  title: Text('Location: $city, $postalCode'),
+                  subtitle: Text(
+                      'Timestamp: ${_formatTimestamp(timestamp)}\nLatitude: $latitude\nLongitude: $longitude'),
+                ),
               );
             },
           );

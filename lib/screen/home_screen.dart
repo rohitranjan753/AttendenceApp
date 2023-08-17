@@ -37,16 +37,16 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Screen'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+
           children: [
-            Text('Welcome,'),
-            Text(
-              'Rohit',
-              style: TextStyle(fontSize: 20),
-            ),
+            Text('Welcome,',style: TextStyle(
+              fontSize: 30
+            ),textAlign: TextAlign.start,),
+
             Container(
               alignment: Alignment.centerLeft,
               child: RichText(
