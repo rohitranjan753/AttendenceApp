@@ -1,5 +1,8 @@
 import 'package:attendenceapp/screen/upload_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,7 +12,26 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  String buttonText = 'CHECK-IN';
+  Color buttonColor = Colors.black;
+
+  Future<bool> hasCheckedInToday() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userDocRef =
+        FirebaseFirestore.instance.collection('Users').doc(currentUser!.uid);
+
+    final today = DateTime.now();
+    final startOfToday = DateTime(today.year, today.month, today.day);
+
+    final querySnapshot = await userDocRef
+        .collection('attendance')
+        .where('timestamp', isGreaterThanOrEqualTo: startOfToday)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,15 +88,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UploadScreen()));
-                },
+                onPressed: buttonColor == Colors.black
+                    ? () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadScreen()));
+                      }
+                    : () {
+                        print(buttonColor);
+                      },
                 child: Text(
-                  'CHECK-IN',
+                  buttonText,
                   style: TextStyle(
                       color: Colors.white, fontSize: 20, letterSpacing: 3),
                 ),
+                color: buttonColor,
               ),
             ),
           ],
@@ -84,8 +113,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didPopNext() {
+    super.didPopNext();
+    checkCheckInStatus();
+    setState(() {});
+  }
+
+  @override
   void initState() {
     super.initState();
+    checkCheckInStatus();
+  }
 
+  void checkCheckInStatus() async {
+    final hasCheckedIn = await hasCheckedInToday();
+
+    if (hasCheckedIn) {
+      setState(() {
+        buttonColor = Colors.grey;
+        buttonText = 'AlLREADY CHECKED IN';
+      });
+    }
   }
 }

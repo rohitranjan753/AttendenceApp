@@ -55,7 +55,7 @@ class _HomeScreenState extends State<ScaffoldNavBar> {
                     },
                     child: Center(
                       child: Icon(navigationIcons[i],
-                        size: i==currrentIndex? 40:30,
+                        size: i==currrentIndex? 40:26,
                         color: i==currrentIndex? Colors.lightBlue : Colors.black45,),
 
                     ),

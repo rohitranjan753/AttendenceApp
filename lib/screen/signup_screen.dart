@@ -32,7 +32,7 @@ class SignupPage extends StatelessWidget {
             'email': _emailController.text,
           });
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ScaffoldNavBar()));
+              context, MaterialPageRoute(builder: (context) => NavBar()));
         }
       }
     } on FirebaseAuthException catch (e) {

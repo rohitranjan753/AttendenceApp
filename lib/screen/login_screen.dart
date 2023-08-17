@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
         if (userCredential.user != null) {
           // Create a new user document in Firestore
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ScaffoldNavBar()));
+              context, MaterialPageRoute(builder: (context) => NavBar()));
         }
       }
     } on FirebaseAuthException catch (e) {
