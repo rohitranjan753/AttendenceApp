@@ -203,8 +203,6 @@ class _UploadScreenState extends State<UploadScreen> {
 
       final userDocRef =
           FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
-      print('latidude +${_latitude}');
-      print('longitude +${_longitude}');
 
       userDocRef.collection('attendance').doc(uniqueId).set({
         'imageUrl': imageUrl,

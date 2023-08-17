@@ -2,6 +2,7 @@ import 'package:attendenceapp/model/user.dart';
 import 'package:attendenceapp/screen/home_screen.dart';
 import 'package:attendenceapp/screen/login_screen.dart';
 import 'package:attendenceapp/widget/navbar.dart';
+import 'package:attendenceapp/widget/scaffold_navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class SignupPage extends StatelessWidget {
             'email': _emailController.text,
           });
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => NavBar()));
+              context, MaterialPageRoute(builder: (context) => ScaffoldNavBar()));
         }
       }
     } on FirebaseAuthException catch (e) {

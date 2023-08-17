@@ -1,6 +1,7 @@
 import 'package:attendenceapp/screen/home_screen.dart';
 import 'package:attendenceapp/screen/signup_screen.dart';
 import 'package:attendenceapp/widget/navbar.dart';
+import 'package:attendenceapp/widget/scaffold_navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
         if (userCredential.user != null) {
           // Create a new user document in Firestore
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => NavBar()));
+              context, MaterialPageRoute(builder: (context) => ScaffoldNavBar()));
         }
       }
     } on FirebaseAuthException catch (e) {
