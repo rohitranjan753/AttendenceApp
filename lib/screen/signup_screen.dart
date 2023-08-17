@@ -1,4 +1,3 @@
-import 'package:attendenceapp/model/user.dart';
 import 'package:attendenceapp/screen/home_screen.dart';
 import 'package:attendenceapp/screen/login_screen.dart';
 import 'package:attendenceapp/widget/navbar.dart';

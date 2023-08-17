@@ -26,52 +26,6 @@ class _UploadScreenState extends State<UploadScreen> {
   bool _isLoading = false;
 
 
-  // Future<void> _showImageDialog() async {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Choose Image Source'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               GestureDetector(
-  //                 child: Text('Camera'),
-  //                 onTap: () async {
-  //                   Navigator.pop(context);
-  //                   final pickedImage = await ImagePicker().pickImage(
-  //                       source: ImageSource.camera, imageQuality: 50);
-  //                   // _setImage(pickedImage);
-  //                   setState(() {
-  //                     if (pickedImage != null) {
-  //                       _image = File(pickedImage.path);
-  //                     }
-  //                   });
-  //                 },
-  //               ),
-  //               SizedBox(height: 10),
-  //               GestureDetector(
-  //                 child: Text('Gallery'),
-  //                 onTap: () async {
-  //                   Navigator.pop(context);
-  //                   final pickedImage = await ImagePicker().pickImage(
-  //                       source: ImageSource.gallery, imageQuality: 50);
-  //                   setState(() {
-  //                     if (pickedImage != null) {
-  //                       _image = File(pickedImage.path);
-  //                     }
-  //                   });
-  //                   // _setImage(pickedImage);
-  //                 },
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Future<void> _showImageDialog() async {
     PermissionStatus status = await Permission.camera.request();
     if (status.isGranted) {
@@ -112,27 +66,6 @@ class _UploadScreenState extends State<UploadScreen> {
 
   }
 
-  // void _getLocation() async {
-  //   PermissionStatus status = await Permission.location.request();
-  //   if (status.isGranted) {
-  //     Position position = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.high);
-  //
-  //     setState(() {
-  //       _latitude = position.latitude.toString();
-  //       _longitude = position.longitude.toString();
-  //     });
-  //   } else {
-  //     // Handle denied or restricted permissions
-  //     if (status.isDenied) {
-  //       // You can show a message to the user
-  //       print('Location permission denied by user.');
-  //     } else if (status.isPermanentlyDenied) {
-  //       // You can show a dialog to guide the user to app settings
-  //       print('Location permission is permanently denied.');
-  //     }
-  //   }
-  // }
 
   void _getLocation() async {
     PermissionStatus status = await Permission.location.request();

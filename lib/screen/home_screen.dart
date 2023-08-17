@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     if (hasCheckedIn) {
       setState(() {
         buttonColor = Colors.grey;
-        buttonText = 'AlLREADY CHECKED IN';
+        buttonText = 'ALREADY CHECKED IN';
       });
     }
   }

@@ -1,3 +1,4 @@
+import 'package:attendenceapp/screen/history_screen.dart';
 import 'package:attendenceapp/screen/home_screen.dart';
 import 'package:attendenceapp/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _NavBarState extends State<NavBar> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static List<Widget> pages = [
     HomeScreen(),
+    HistoryScreen(),
    ProfileScreen(),
 
   ];
@@ -33,7 +35,7 @@ class _NavBarState extends State<NavBar> {
           ),
           borderRadius: BorderRadius.circular(20),
 
-          color: Colors.transparent,
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
@@ -53,12 +55,16 @@ class _NavBarState extends State<NavBar> {
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               duration: Duration(milliseconds: 400),
-              tabBackgroundColor: Colors.purple.shade200,
+              tabBackgroundColor: Colors.purple.shade50,
               color: Colors.black,
               tabs: [
                 GButton(
                   icon: LineIcons.home,
                   text: 'Home',
+                ),
+                GButton(
+                  icon: LineIcons.clock,
+                  text: 'History',
                 ),
 
                 GButton(
