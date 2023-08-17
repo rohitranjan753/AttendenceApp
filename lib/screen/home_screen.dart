@@ -34,79 +34,84 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
+    return SafeArea(
 
-          children: [
-            Text('Welcome,',style: TextStyle(
-              fontSize: 30
-            ),textAlign: TextAlign.start,),
+      child: Scaffold(
 
-            Container(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                text: TextSpan(
-                    text: DateTime.now().day.toString(),
-                    style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 30,
-                    ),
-                    children: [
-                      TextSpan(
-                          text: DateFormat(' MMM yy').format(DateTime.now()),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ))
-                    ]),
-              ),
-            ),
-            StreamBuilder(
-                stream: Stream.periodic(const Duration(seconds: 1)),
-                builder: (context, snapshot) {
-                  return Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      DateFormat('hh:mm:ss a').format(DateTime.now()),
-                      style: TextStyle(color: Colors.black54, fontSize: 20),
-                    ),
-                  );
-                }),
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 60,
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: MaterialButton(
-                onPressed: buttonColor == Colors.black
-                    ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UploadScreen()));
-                      }
-                    : () {
-                        print(buttonColor);
-                      },
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                      color: Colors.white, fontSize: 20, letterSpacing: 3),
+        // appBar: AppBar(
+        //   // backgroundColor: Colors.purple,
+        //   title: Text('Home Screen'),
+        //   centerTitle: true,
+        // ),
+        body: SingleChildScrollView(
+          child: Column(
+
+            children: [
+              Text('Welcome,',style: TextStyle(
+                fontSize: 30
+              ),textAlign: TextAlign.start,),
+
+              Container(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                  text: TextSpan(
+                      text: DateTime.now().day.toString(),
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontSize: 30,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: DateFormat(' MMM yy').format(DateTime.now()),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ))
+                      ]),
                 ),
-                color: buttonColor,
               ),
-            ),
-          ],
+              StreamBuilder(
+                  stream: Stream.periodic(const Duration(seconds: 1)),
+                  builder: (context, snapshot) {
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        DateFormat('hh:mm:ss a').format(DateTime.now()),
+                        style: TextStyle(color: Colors.black54, fontSize: 20),
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                height: 60,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: MaterialButton(
+                  onPressed: buttonColor == Colors.black
+                      ? () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UploadScreen()));
+                        }
+                      : () {
+                          print(buttonColor);
+                        },
+                  child: Text(
+                    buttonText,
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, letterSpacing: 3),
+                  ),
+                  color: buttonColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

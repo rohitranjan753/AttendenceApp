@@ -5,12 +5,24 @@ import 'package:attendenceapp/widget/scaffold_navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  bool passwordVisible = true;
+
   TextEditingController _emailController = TextEditingController();
+
   TextEditingController _passController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _signUpWithEmailAndPassword(BuildContext context) async {
@@ -49,45 +61,34 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
-          ),
-        ),
-      ),
+
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: EdgeInsets.all(15),
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text(
-                    "Sign up",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Create an account, It's free",
-                    style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                  ),
-                ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/signup_lottie.json',
+                height: MediaQuery.of(context).size.height * 0.2,
+                repeat: true,
+                reverse: true,
               ),
+              Text(
+                "Sign up",
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Create an account, It's free",
+                style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+              ),
+              SizedBox(height: 50,),
               Form(
                 key: _formKey,
                 child: Column(
@@ -110,7 +111,7 @@ class SignupPage extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     TextFormField(
                       validator: (value) {
@@ -123,23 +124,45 @@ class SignupPage extends StatelessWidget {
                       },
                       controller: _passController,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.lock_open_outlined),
+                          prefixIcon: Icon(Icons.fingerprint_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                          ),
                           hintText: "Type your password",
                           labelText: "Enter password",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
                       keyboardType: TextInputType.text,
-                      obscureText: true,
+                      obscureText: passwordVisible,
                     ),
                   ],
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _signUpWithEmailAndPassword(context);
-                },
-                child: Text('Sign Up'),
+              SizedBox(height: 30,),
+              Container(
+                padding: EdgeInsets.all(6),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.purple),
+                child: MaterialButton(
+                  onPressed: () {
+                    _signUpWithEmailAndPassword(context);
+                  },
+                  child: Text('SIGN UP',style: TextStyle(
+                      letterSpacing: 3, fontSize: 20, color: Colors.white),),
+                ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +176,7 @@ class SignupPage extends StatelessWidget {
                     child: Text(
                       " Login",
                       style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18,color: Colors.purple),
                     ),
                   ),
                 ],
