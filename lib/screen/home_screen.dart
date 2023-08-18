@@ -35,23 +35,25 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
       child: Scaffold(
-
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
-
             children: [
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               Container(
                 alignment: Alignment.centerLeft,
-                child: Text('Welcome!',style: TextStyle(
-                  fontSize: 30
-                ),textAlign: TextAlign.start,),
+                child: Text(
+                  'Welcome!',
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.start,
+                ),
               ),
-              SizedBox(height: 50,),
-
+              SizedBox(
+                height: 50,
+              ),
               Container(
                 alignment: Alignment.centerLeft,
                 child: RichText(

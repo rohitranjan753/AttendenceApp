@@ -52,7 +52,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     String csvData = const ListToCsvConverter().convert(rows);
 
     final directory =
-        await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
+        await getExternalStorageDirectory();
     final file = File('${directory!.path}/attendance_data.csv');
     await file.writeAsString(csvData);
 
@@ -79,12 +79,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-
   // void _openGoogleMaps(double latitude, double longitude) async {
-  //   final String latitudeValue = latitude.toString().trim();
-  //   final String longitudeValue = longitude.toString().trim();
-  //
-  //   final url = 'https://www.google.com/maps/@$latitudeValue,$longitudeValue,15z';
+  //   final url = 'geo:$latitude,$longitude';
   //
   //   if (await canLaunch(url)) {
   //     await launch(url);
@@ -92,15 +88,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   //     throw 'Could not launch $url';
   //   }
   // }
-  void _openGoogleMaps(double latitude, double longitude) async {
-    final url = 'geo:$latitude,$longitude';
-
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   void _openGoogleMapsWithPin(double latitude, double longitude, String label) async {
     final url = 'geo:$latitude,$longitude?q=$latitude,$longitude($label)';
