@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool passwordVisible = true;
+  bool _isSigningIn = false;
 
   TextEditingController _emailController = TextEditingController();
 
@@ -26,6 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _signInWithEmailAndPassword(BuildContext context) async {
+    setState(() {
+      _isSigningIn = true;
+    });
     try {
       if (_formKey.currentState!.validate()) {
         UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -49,6 +53,9 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Theme.of(context).errorColor,
       ));
     }
+    setState(() {
+      _isSigningIn = false;
+    });
   }
 
   @override
@@ -146,16 +153,25 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.purple),
-                child: MaterialButton(
-                  onPressed: () {
-                    _signInWithEmailAndPassword(context);
-                  },
-                  child: Text(
-                    'SIGN IN',
-                    style: TextStyle(
-                        letterSpacing: 3, fontSize: 20, color: Colors.white),
-                  ),
-                ),
+                child: _isSigningIn
+                    ? Center(
+                      child: CircularProgressIndicator(
+
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                    )
+                    : MaterialButton(
+                        onPressed: () {
+                          _signInWithEmailAndPassword(context);
+                        },
+                        child: Text(
+                          'SIGN IN',
+                          style: TextStyle(
+                              letterSpacing: 3,
+                              fontSize: 20,
+                              color: Colors.white),
+                        ),
+                      ),
               ),
               SizedBox(
                 height: 10,

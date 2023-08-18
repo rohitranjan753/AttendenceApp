@@ -14,6 +14,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   bool passwordVisible = true;
+  bool _isSigningIn = false;
 
   TextEditingController _emailController = TextEditingController();
 
@@ -26,6 +27,9 @@ class _SignupPageState extends State<SignupPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _signUpWithEmailAndPassword(BuildContext context) async {
+    setState(() {
+      _isSigningIn = true;
+    });
     try {
       if (_formKey.currentState!.validate()) {
         UserCredential userCredential =
@@ -56,13 +60,16 @@ class _SignupPageState extends State<SignupPage> {
         backgroundColor: Theme.of(context).errorColor,
       ));
     }
+
+    setState(() {
+      _isSigningIn = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(15),
@@ -88,7 +95,9 @@ class _SignupPageState extends State<SignupPage> {
                 "Create an account, It's free",
                 style: TextStyle(fontSize: 15, color: Colors.grey[700]),
               ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               Form(
                 key: _formKey,
                 child: Column(
@@ -146,20 +155,34 @@ class _SignupPageState extends State<SignupPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Container(
                 padding: EdgeInsets.all(6),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.purple),
-                child: MaterialButton(
-                  onPressed: () {
-                    _signUpWithEmailAndPassword(context);
-                  },
-                  child: Text('SIGN UP',style: TextStyle(
-                      letterSpacing: 3, fontSize: 20, color: Colors.white),),
-                ),
+                child: _isSigningIn
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : MaterialButton(
+                        onPressed: () {
+                          _signUpWithEmailAndPassword(context);
+                        },
+                        child: Text(
+                          'SIGN UP',
+                          style: TextStyle(
+                              letterSpacing: 3,
+                              fontSize: 20,
+                              color: Colors.white),
+                        ),
+                      ),
               ),
               SizedBox(
                 height: 10,
@@ -175,8 +198,10 @@ class _SignupPageState extends State<SignupPage> {
                     },
                     child: Text(
                       " Login",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18,color: Colors.purple),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.purple),
                     ),
                   ),
                 ],
