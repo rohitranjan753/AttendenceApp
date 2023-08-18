@@ -54,6 +54,7 @@ dependencies:
   csv: ^5.0.2
   share: ^2.0.4
   url_launcher: ^6.1.12
+  flutter_web_browser: ^0.17.1
 
 dev_dependencies:
   flutter_test:

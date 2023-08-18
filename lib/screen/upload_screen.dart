@@ -18,13 +18,13 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  String _latitude="";
-  String _longitude="";
-  String _city="";
-  String _postalCode="";
+  bool _uploadSuccessful = false;
+  String _latitude = "";
+  String _longitude = "";
+  String _city = "";
+  String _postalCode = "";
   File? _image;
   bool _isLoading = false;
-
 
   Future<void> _showImageDialog() async {
     PermissionStatus status = await Permission.camera.request();
@@ -37,9 +37,7 @@ class _UploadScreenState extends State<UploadScreen> {
           _image = File(pickedImage.path);
         });
       }
-
     } else {
-      // Handle denied or restricted permissions
       if (status.isDenied) {
         Fluttertoast.showToast(
             msg: "Camera permission denied",
@@ -48,10 +46,8 @@ class _UploadScreenState extends State<UploadScreen> {
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
+            fontSize: 16.0);
       } else if (status.isPermanentlyDenied) {
-        // You can show a dialog to guide the user to app settings
         Fluttertoast.showToast(
             msg: "Camera permission denied permanently",
             toastLength: Toast.LENGTH_SHORT,
@@ -59,13 +55,10 @@ class _UploadScreenState extends State<UploadScreen> {
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
             textColor: Colors.white,
-            fontSize: 16.0
-        );
+            fontSize: 16.0);
       }
     }
-
   }
-
 
   void _getLocation() async {
     PermissionStatus status = await Permission.location.request();
@@ -102,7 +95,6 @@ class _UploadScreenState extends State<UploadScreen> {
     }
   }
 
-
   Future<void> _uploadImage() async {
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -114,7 +106,7 @@ class _UploadScreenState extends State<UploadScreen> {
       return;
     }
     setState(() {
-      _isLoading = true; // Show progress indicator
+      _isLoading = true;
     });
 
     try {
@@ -122,7 +114,6 @@ class _UploadScreenState extends State<UploadScreen> {
       final currentUser = FirebaseAuth.instance.currentUser;
 
       String? uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
-
 
       if (currentUser == null) return;
 
@@ -140,11 +131,10 @@ class _UploadScreenState extends State<UploadScreen> {
       userDocRef.collection('attendance').doc(uniqueId).set({
         'imageUrl': imageUrl,
         'timestamp': FieldValue.serverTimestamp(),
-        'latitude':_latitude,
-        'longitude':_longitude,
-        "city":_city,
+        'latitude': _latitude,
+        'longitude': _longitude,
+        "city": _city,
         "postalcode": _postalCode,
-
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -153,6 +143,9 @@ class _UploadScreenState extends State<UploadScreen> {
           backgroundColor: Colors.green,
         ),
       );
+      setState(() {
+        _uploadSuccessful = true;
+      });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -160,22 +153,13 @@ class _UploadScreenState extends State<UploadScreen> {
           backgroundColor: Colors.red,
         ),
       );
-    }
-    finally{
+    } finally {
       setState(() {
-        _isLoading = false; // Hide progress indicator
-        _image = null; // Clear the image after upload
+        _isLoading = false;
+        _image = null;
       });
     }
   }
-
-  // void _setImage(XFile? pickedImage) {
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _image = File(pickedImage.path);
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -187,9 +171,10 @@ class _UploadScreenState extends State<UploadScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
-
           children: [
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             InkWell(
               onTap: () {
                 print('Clicking on image');
@@ -209,25 +194,30 @@ class _UploadScreenState extends State<UploadScreen> {
                             image: AssetImage('assets/upload_attendance.png'),
                             fit: BoxFit.contain,
                           ),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey)
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey)),
               ),
             ),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             Container(
               height: 60,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: _uploadSuccessful ? Colors.grey : Colors.black,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: MaterialButton(
                 onPressed: () {
-                  _uploadImage();
-
+                  onPressed:
+                  _uploadSuccessful ? null : _uploadImage();
                 },
-                child: Text('UPLOAD',style: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 20),),
+                child: Text(
+                  'UPLOAD',
+                  style: TextStyle(
+                      color: Colors.white, letterSpacing: 3, fontSize: 20),
+                ),
               ),
             ),
             if (_isLoading) CircularProgressIndicator(),

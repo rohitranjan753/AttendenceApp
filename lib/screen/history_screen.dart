@@ -5,9 +5,11 @@ import 'package:csv/csv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -70,6 +72,50 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return 'N/A';
   }
 
+  Future<void> _launchURL() async {
+    await FlutterWebBrowser.openWebPage(
+      url: 'https://www.google.com',
+
+    );
+  }
+
+
+  // void _openGoogleMaps(double latitude, double longitude) async {
+  //   final String latitudeValue = latitude.toString().trim();
+  //   final String longitudeValue = longitude.toString().trim();
+  //
+  //   final url = 'https://www.google.com/maps/@$latitudeValue,$longitudeValue,15z';
+  //
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
+  void _openGoogleMaps(double latitude, double longitude) async {
+    final url = 'geo:$latitude,$longitude';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void _openGoogleMapsWithPin(double latitude, double longitude, String label) async {
+    final url = 'geo:$latitude,$longitude?q=$latitude,$longitude($label)';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+
+
+
   final userDocRef = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -130,16 +176,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         offset: Offset(2, 2),
                       )
                     ]),
-                child: ListTile(
-                  leading: Expanded(
-                    child: Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ), // Display the image
-                  title: Text('Location: $city, $postalCode'),
-                  subtitle: Text(
-                      'Timestamp: ${_formatTimestamp(timestamp)}\nLatitude: $latitude\nLongitude: $longitude'),
+                child: GestureDetector(
+                  onTap: () {
+                    // _launchURL();
+                    double parsedLatitude = double.parse(latitude);
+                    double parsedLongitude = double.parse(longitude);
+                    _openGoogleMapsWithPin(
+
+                      parsedLatitude,
+                      parsedLongitude,
+                      '$city, $postalCode',
+                    );
+                    // double parsedLatitude = double.parse(latitude);
+                    // double parsedLongitude = double.parse(longitude);
+                    // _openGoogleMaps(parsedLatitude, parsedLongitude);
+                  },
+                  child: ListTile(
+                    leading: Expanded(
+                      child: Image.network(
+                        imageUrl,
+
+                      ),
+                    ), // Display the image
+                    title: Text('Location: $city, $postalCode'),
+                    subtitle: Text(
+                        'Timestamp: ${_formatTimestamp(timestamp)}\nLatitude: $latitude\nLongitude: $longitude'),
+                  ),
                 ),
               );
             },
