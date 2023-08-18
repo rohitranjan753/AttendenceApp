@@ -17,11 +17,18 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  List<QueryDocumentSnapshot> docs = []; // Declare the list here
+  List<QueryDocumentSnapshot> docs = [];
 
   Future<void> _exportAttendanceData(List<QueryDocumentSnapshot> docs) async {
     List<List<dynamic>> rows = [];
-    rows.add(['Timestamp','Location', 'Latitude', 'Longitude', 'City', 'Postal Code']);
+    rows.add([
+      'Timestamp',
+      'Location',
+      'Latitude',
+      'Longitude',
+      'City',
+      'Postal Code'
+    ]);
 
     for (var doc in docs) {
       final timestamp = _formatTimestamp(doc['timestamp']);
@@ -29,14 +36,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       final longitude = doc['longitude'];
       final city = doc['city'];
       final postalCode = doc['postalcode'];
-      // Add print statements to debug
-      print('Timestamp: $timestamp');
-      print('Latitude: $latitude');
-      print('Longitude: $longitude');
-      print('City: $city');
-      print('Postal Code: $postalCode');
-
-
 
       rows.add([
         timestamp.toString(),
@@ -50,7 +49,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     String csvData = const ListToCsvConverter().convert(rows);
 
-    final directory = await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
+    final directory =
+        await getExternalStorageDirectory(); // or getApplicationDocumentsDirectory()
     final file = File('${directory!.path}/attendance_data.csv');
     await file.writeAsString(csvData);
 
@@ -61,8 +61,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       mimeTypes: ['text/csv'], // Corrected parameter name
     );
   }
-
-
 
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp is Timestamp) {
@@ -122,7 +120,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
               return Container(
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  border: Border.all(color: Colors.black26),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(

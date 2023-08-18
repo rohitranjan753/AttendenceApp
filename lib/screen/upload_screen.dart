@@ -189,6 +189,7 @@ class _UploadScreenState extends State<UploadScreen> {
         child: Column(
 
           children: [
+            SizedBox(height: 30,),
             InkWell(
               onTap: () {
                 print('Clicking on image');
@@ -213,13 +214,13 @@ class _UploadScreenState extends State<UploadScreen> {
                     ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 50,),
             Container(
               height: 60,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(5),
               ),
               child: MaterialButton(
                 onPressed: () {
