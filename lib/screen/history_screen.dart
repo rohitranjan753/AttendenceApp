@@ -79,6 +79,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('History'),
         centerTitle: true,
         actions: [
@@ -131,8 +132,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       )
                     ]),
                 child: ListTile(
-                  leading: Image.network(
-                    imageUrl,
+                  leading: Expanded(
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                    ),
                   ), // Display the image
                   title: Text('Location: $city, $postalCode'),
                   subtitle: Text(

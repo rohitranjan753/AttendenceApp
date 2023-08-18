@@ -38,18 +38,19 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
       child: Scaffold(
 
-        // appBar: AppBar(
-        //   // backgroundColor: Colors.purple,
-        //   title: Text('Home Screen'),
-        //   centerTitle: true,
-        // ),
-        body: SingleChildScrollView(
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
           child: Column(
 
             children: [
-              Text('Welcome,',style: TextStyle(
-                fontSize: 30
-              ),textAlign: TextAlign.start,),
+              SizedBox(height: 40,),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text('Welcome!',style: TextStyle(
+                  fontSize: 30
+                ),textAlign: TextAlign.start,),
+              ),
+              SizedBox(height: 50,),
 
               Container(
                 alignment: Alignment.centerLeft,

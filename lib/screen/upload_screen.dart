@@ -181,49 +181,57 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Upload Image'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () {
-              print('Clicking on image');
-              _showImageDialog();
-            },
-            child: Container(
-              alignment: Alignment.center,
-              height: 300,
-              width: 300,
-              decoration: BoxDecoration(
-                  image: _image != null
-                      ? DecorationImage(
-                          image: FileImage(_image!),
-                          fit: BoxFit.cover,
-                        )
-                      : DecorationImage(
-                          image: AssetImage('assets/upload.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(10, 3),
-                      blurRadius: 10,
-                    )
-                  ]),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _uploadImage();
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
 
-            },
-            child: Text('UPLOAD'),
-          ),
-          if (_isLoading) CircularProgressIndicator(),
-        ],
+          children: [
+            InkWell(
+              onTap: () {
+                print('Clicking on image');
+                _showImageDialog();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 300,
+                width: 300,
+                decoration: BoxDecoration(
+                    image: _image != null
+                        ? DecorationImage(
+                            image: FileImage(_image!),
+                            fit: BoxFit.cover,
+                          )
+                        : DecorationImage(
+                            image: AssetImage('assets/upload_attendance.png'),
+                            fit: BoxFit.contain,
+                          ),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey)
+                    ),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Container(
+              height: 60,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.purple,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: MaterialButton(
+                onPressed: () {
+                  _uploadImage();
+
+                },
+                child: Text('UPLOAD',style: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 20),),
+              ),
+            ),
+            if (_isLoading) CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
